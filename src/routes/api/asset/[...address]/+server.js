@@ -7,7 +7,7 @@ import { error } from '@sveltejs/kit';
 */
 
 /** * @type {import('./$types').RequestHandler} */
-export async function GET({ params, url, fetch }) {
+export async function GET({ params, url }) {
   // console.log('request received for PUBLIC Instagram image asset', params.address);
 
   const { address } = params;
