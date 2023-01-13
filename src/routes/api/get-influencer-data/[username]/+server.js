@@ -14,7 +14,7 @@ export async function GET({ params }) {
   const { username } = params;
   console.log(`endpoint hit: /api/get-influencer-data/${username}`);
 
-  console.log('attempting to fetch data from instagram API........');
+  // console.log('attempting to fetch data from instagram API........');
   // fetch user data from instagram API
   const getInfluencerData = fetch(`https://www.instagram.com/${username}/channel/?__a=1&__d=dis`, 
     {
@@ -44,7 +44,7 @@ export async function GET({ params }) {
       }
       // logic to run on the data retrieved from instagram API
       else {
-        console.log(`received data from instagram API for ${username}!`);
+        // console.log(`received data from instagram API for ${username}!`);
         const {
           graphql : {
             user : { 

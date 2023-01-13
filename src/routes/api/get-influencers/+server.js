@@ -8,7 +8,7 @@ this endpoint will:
 
 /** @type {import('./$types').RequestHandler} */
 export const GET = async ({ fetch }) => {
-  console.log('endpoint hit: /api/get-influencers');
+  // console.log('endpoint hit: /api/get-influencers');
   // these locations are no longer working
   const notWorkingLocations = ['243993197', '156771374797409', '1422137628045302', '279966182', '111707264771812', '839692986', '106574191696102', '111497980393935', '1033913461', '3001373'];
 
@@ -21,7 +21,7 @@ export const GET = async ({ fetch }) => {
   // iterate through the array of influencers to check for outdated data
   for (let i = 0; i < influencers.length; i++)
   {
-    console.log('checking influencer data for:  ' + influencers[i].username);
+    // console.log('checking influencer data for:  ' + influencers[i].username);
 
     // check if data is old
     const date = influencers[i].last_updated;
@@ -29,13 +29,13 @@ export const GET = async ({ fetch }) => {
 
     if (older)
     {
-      console.log('found outdated influencer data');
+      // console.log('found outdated influencer data');
       const response = await fetch(`/api/get-influencer-data/${influencers[i].username}`);
 
       if (response.ok)
       {
         const data = await response.json();
-        console.log('able to retrieve new data for: ' + influencers[i].username, data);
+        // console.log('able to retrieve new data for: ' + influencers[i].username, data);
         
         // reassign the influencer data to the new data
         influencers[i] = await data;
@@ -53,7 +53,7 @@ export const GET = async ({ fetch }) => {
       }
       else
       {
-        console.log('unable to retrieve new data for: ' + influencers[i].username, 'keeping old data....');
+        // console.log('unable to retrieve new data for: ' + influencers[i].username, 'keeping old data....');
         influencers[i].last_visited_locations.forEach((location) =>
         {
           if (!locationIDs.includes(location) && !notWorkingLocations.includes(location))

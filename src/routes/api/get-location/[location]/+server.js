@@ -11,8 +11,8 @@ import { getLocation, isOlderThanFiveDays } from '$lib/db/firebase';
 /** @type {import('./$types').RequestHandler} */
 export async function GET({ params, fetch }) {
 
-  console.log('endpoint hit: /api/get-location/[location]');
   const { location } = params;
+  console.log(`endpoint hit: /api/get-location/${location}`);
   // Check if the location already exists in the database
   const data = await getLocation(location);
 
@@ -26,7 +26,7 @@ export async function GET({ params, fetch }) {
       if (response.ok)
       {
         const newLocationData = await response.json();
-        console.log('new location data for: ' + location);
+        // console.log('new location data for: ' + location);
 
         return new Response(JSON.stringify(newLocationData), {
           headers: {
@@ -39,7 +39,7 @@ export async function GET({ params, fetch }) {
     }
     catch (err)
     {
-      console.log("ERROR FETCHING NEW DATA FOR " + location + ": \n", err, "\n RETURNING OLD DATA");
+      // console.log("ERROR FETCHING NEW DATA FOR " + location + ": \n", err, "\n RETURNING OLD DATA");
       throw new error(500, err);
     }
   }

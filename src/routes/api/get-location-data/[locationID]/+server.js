@@ -9,8 +9,8 @@ import { addOrUpdateLocation } from '$lib/db/firebase';
 
 /** @type {import('./$types').RequestHandler} */
 export async function GET({ params }) {
-  // console.log('endpoint hit: /api/get-location-data/[locationID].json');
   const { locationID } = params;
+  console.log(`endpoint hit: /api/get-location-data/${locationID}`);
 
 
   // fetch location data from instagram API
@@ -152,11 +152,11 @@ export async function GET({ params }) {
   
   const payload = await getLocationData;
 
-  const update = async () => {
+  /* const update = async () => {
     try 
     {
       await addOrUpdateLocation(locationID, payload);
-      console.log(`UPDATE FOR ${locationID} SUCCESSFUL!`);
+      // console.log(`UPDATE FOR ${locationID} SUCCESSFUL!`);
 
       return;
     }
@@ -168,13 +168,14 @@ export async function GET({ params }) {
   } 
     
 
-  setTimeout(update, 0);
+  setTimeout(update, 0); */
+  addOrUpdateLocation(locationID, payload);
 
   return new Response(JSON.stringify(payload), {
     headers: {
       'Content-Type': 'application/json',
       'Access-Control-Allow-Origin': '*',
-      // 'Cache-Control': 'public, max-age=120',
+      'Cache-Control': 'public, max-age=120',
     }
   })
 }

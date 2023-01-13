@@ -8,12 +8,12 @@ import { error } from '@sveltejs/kit';
 
 /** * @type {import('./$types').RequestHandler} */
 export async function GET({ params, url, fetch }) {
-  console.log('request received for PUBLIC Instagram image asset', params.address);
+  // console.log('request received for PUBLIC Instagram image asset', params.address);
 
   const { address } = params;
   
   // initiate fetch request for image. Include any needed params to for the request
-  console.log('attempting to fetch image from CDN........');
+  // console.log('attempting to fetch image from CDN........');
   const response = await fetch(address + url.search, {
     method: 'GET',
     headers: {
@@ -21,7 +21,7 @@ export async function GET({ params, url, fetch }) {
       },
     })
     .catch((e) => {
-      console.log('error fetching image from image host: ', e);
+      // console.log('error fetching image from image host: ', e);
       throw new error(500, e)
     });
 

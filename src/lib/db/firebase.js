@@ -51,7 +51,7 @@ export const getLocations = async (...IDs) => {
   for (let i = 0; i < locationIDs.length - 1; i++)
   {
     const location = locationIDs[i];
-    console.log('Currently getting location for id:   ',location)
+    // console.log('Currently getting location for id:   ',location)
     const locationRef = doc(locationsCollection, location);
     const locationSnapshot = await getDoc(locationRef);
 
@@ -106,7 +106,7 @@ export const updateInfluencer = async (username, payload) => {
     });
   }
 
-  console.log(`SUCCESSFULLY UPDATED DATA FOR ${username}!`);
+  // console.log(`SUCCESSFULLY UPDATED DATA FOR ${username}!`); 
   
   return;
 }
@@ -124,11 +124,11 @@ export const addOrUpdateLocation = async (locationID, payload) => {
   } 
   catch(err) 
   {
-    console.log(err);
+    console.error(err);
     throw error(500, err);
   }
 
-  console.log(`UPDATE FOR ${locationID} SUCCESSFUL!`);
+  // console.log(`UPDATE FOR ${locationID} SUCCESSFUL!`);
   return;
 }
 
@@ -140,17 +140,17 @@ export const isOlderThanThreeDays = (date) => {
   const threeDaysInMs = 3 * 24 * 60 * 60 * 1000;
   const timestampThreeDaysAgo = Timestamp.now().toMillis() - threeDaysInMs;
 
-  console.log("timestampThreeDaysAgo", timestampThreeDaysAgo);
+  // console.log("timestampThreeDaysAgo", timestampThreeDaysAgo);
   
   const timestamp = new Timestamp(date.seconds, date.nanoseconds).toMillis();
-  console.log("timestamp of input date", timestamp);
+  // console.log("timestamp of input date", timestamp);
 
   if (timestampThreeDaysAgo > timestamp) {
     // console.log('date IS MORE than 3 days into the past');
     return true;
   }
   else {
-    console.log('date IS NOT MORE than 3 days into the past');
+    // console.log('date IS NOT MORE than 3 days into the past');
     return false;
   }
 };
@@ -159,20 +159,20 @@ export const isOlderThanFiveDays = (date) => {
   // console.log('here is the date object received', date);
 
   //                   days hours min  sec  ms
-  const threeDaysInMs = 5 * 24 * 60 * 60 * 1000;
-  const timestampThreeDaysAgo = Timestamp.now().toMillis() - threeDaysInMs;
+  const fiveDaysInMs = 5 * 24 * 60 * 60 * 1000;
+  const timestampFiveDaysAgo = Timestamp.now().toMillis() - fiveDaysInMs;
 
-  console.log("timestampThreeDaysAgo", timestampThreeDaysAgo);
+  // console.log("timestampThreeDaysAgo", timestampFiveDaysAgo);
   
   const timestamp = new Timestamp(date.seconds, date.nanoseconds).toMillis();
-  console.log("timestamp of input date", timestamp);
+  // console.log("timestamp of input date", timestamp);
 
-  if (timestampThreeDaysAgo > timestamp) {
+  if (timestampFiveDaysAgo > timestamp) {
     // console.log('date IS MORE than 3 days into the past');
     return true;
   }
   else {
-    console.log('date IS NOT MORE than 3 days into the past');
+    // console.log('date IS NOT MORE than 3 days into the past');
     return false;
   }
 };

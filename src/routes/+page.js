@@ -26,6 +26,6 @@ export async function load({ fetch }) {
   };  
 
   return {
-    influencers: fetchInfluencersData(),
+    influencers: await fetchInfluencersData(),
   };
 }
