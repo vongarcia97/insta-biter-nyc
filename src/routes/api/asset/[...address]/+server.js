@@ -33,6 +33,7 @@ export async function GET({ params, url }) {
 
   return new Response(blob, {
     headers: {
+      "Access-Control-Allow-Origin": "*",
       'Content-Type': 'image/jpeg',
       'Cache-Control': 'max-age=1200',
       },
