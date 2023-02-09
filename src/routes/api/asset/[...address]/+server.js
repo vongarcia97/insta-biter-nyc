@@ -34,7 +34,7 @@ export async function GET({ params, url }) {
   return new Response(blob, {
     headers: {
       'Content-Type': 'image/jpeg',
-      'Cache-Control': 'max-age=31536000',
+      'Cache-Control': 'max-age=1200',
       },
     });
 }
