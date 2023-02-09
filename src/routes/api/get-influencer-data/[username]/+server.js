@@ -1,5 +1,5 @@
 import { error } from '@sveltejs/kit';
-import { updateInfluencer } from '$lib/db/firebase';
+import { updateInfluencer } from '$lib/server/db/firebase';
 /* 
 this endpoint will:
 * 1. initiate a fetch request to the instagram API to retrieve the influencer's data
@@ -120,7 +120,21 @@ export async function GET({ params }) {
         
   const payload = await getInfluencerData;
 
-  updateInfluencer(username, payload);
+  
+
+  const update = async () => {
+    try 
+    {
+      await updateInfluencer(username, payload);
+    }
+    catch(err) 
+    {
+      console.error('UPDATE FAILED: ', err);
+    }
+  }
+    
+
+  update();
   
   return new Response(JSON.stringify(payload), {
     headers: {

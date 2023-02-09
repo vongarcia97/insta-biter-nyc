@@ -88,14 +88,12 @@ export const getLocation = async (locationID) => {
 // Create and export an async function that updates a document within the "influencers" collection
 export const updateInfluencer = async (username, payload) => {
 
-  // Add a timestamp to keep track of last update to the document
-  payload.last_updated = Timestamp.now().toDate();
-
   const influencerRef = doc(influencersCollection, username);
+  const data = {...payload, last_updated: Timestamp.now().toDate()};
 
   try 
   {
-    await setDoc(influencerRef, payload);
+    await setDoc(influencerRef, data);
   } 
   catch(err) 
   {
@@ -114,21 +112,19 @@ export const updateInfluencer = async (username, payload) => {
 // Create and export an async function that updates a document within the "locations" collection
 export const addOrUpdateLocation = async (locationID, payload) => {
   
-  payload.last_updated = Timestamp.now().toDate();
-  
   const locationRef = doc(locationsCollection, locationID);
+  
+  const data = {...payload, last_updated: Timestamp.now().toDate()};
 
   try 
   {
-    await setDoc(locationRef, payload);
+    await setDoc(locationRef, data);
   } 
   catch(err) 
   {
     console.error(err);
-    throw error(500, err);
   }
 
-  // console.log(`UPDATE FOR ${locationID} SUCCESSFUL!`);
   return;
 }
 

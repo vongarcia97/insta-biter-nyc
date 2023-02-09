@@ -1,5 +1,4 @@
-import { error } from '@sveltejs/kit';
-import { addOrUpdateLocation } from '$lib/db/firebase';
+import { addOrUpdateLocation } from '$lib/server/db/firebase';
 
 /* THIS ENDPOINT WILL: 
 * 1. fetch updated location data from Instagram API
@@ -8,7 +7,7 @@ import { addOrUpdateLocation } from '$lib/db/firebase';
 */
 
 /** @type {import('./$types').RequestHandler} */
-export async function GET({ params }) {
+export async function GET({ params, fetch }) {
   const { locationID } = params;
   console.log(`endpoint hit: /api/get-location-data/${locationID}`);
 
@@ -146,30 +145,24 @@ export async function GET({ params }) {
       return payload
     })
     .catch(err => {
-      // console.log(err)
-      throw error(500, err)
+      console.log(err)
     });
   
   const payload = await getLocationData;
 
-  /* const update = async () => {
+  const update = async () => {
     try 
     {
       await addOrUpdateLocation(locationID, payload);
-      // console.log(`UPDATE FOR ${locationID} SUCCESSFUL!`);
-
-      return;
     }
     catch(err) 
     {
       console.error('UPDATE FAILED: ', err);
-      throw error(500, err);
     }
   } 
     
 
-  setTimeout(update, 0); */
-  addOrUpdateLocation(locationID, payload);
+  update();
 
   return new Response(JSON.stringify(payload), {
     headers: {

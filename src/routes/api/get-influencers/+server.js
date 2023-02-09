@@ -1,4 +1,4 @@
-import { getInfluencers, isOlderThanThreeDays } from '$lib/db/firebase';
+import { getInfluencers, isOlderThanThreeDays } from '$lib/server/db/firebase';
 /* 
 this endpoint will:
 * 1. retrieve all influencers from firebase

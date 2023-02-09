@@ -1,11 +1,8 @@
 import { error } from '@sveltejs/kit';
 
 /* This loads the data needed for the page. 
-* It's called at build time on the server, and
-* in the browser when you navigate to /bitmap
+* It's called at build time on the server
 */
-
-
 
 /** @type {import('./$types').PageLoad} */
 export async function load({ fetch }) {
