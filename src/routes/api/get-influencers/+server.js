@@ -25,8 +25,8 @@ export const GET = async ({ fetch }) => {
     // console.log('checking influencer data for:  ' + influencers[i].username);
 
     // check if data is old
-    const date = influencers[i].last_updated;
-    const older = isOlderThanThreeDays(date);
+    // const date = influencers[i].last_updated;
+    const older = /* isOlderThanThreeDays(date) */ false;
 
     if (older)
     {

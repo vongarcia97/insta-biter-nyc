@@ -47,7 +47,7 @@ export async function GET({ params, fetch }) {
       headers: {
         'Content-Type': 'application/json',
         'Access-Control-Allow-Origin': '*',
-        // 'Cache-Control': 'public, max-age=120',
+        'Cache-Control': 'public, max-age=120',
       }
     });
   }
