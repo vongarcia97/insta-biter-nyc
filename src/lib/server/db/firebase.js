@@ -55,13 +55,10 @@ export const getLocations = async (...IDs) => {
     const locationRef = doc(locationsCollection, location);
     const locationSnapshot = await getDoc(locationRef);
 
-    if (locationSnapshot.exists()) 
-    {
+    if (locationSnapshot.exists()) {
       const data = locationSnapshot.data();
       locationsData.push(data);
-    } 
-    else 
-    {
+    } else {
       locationsData.push({not_found: true, location_id: locationIDs[i]});
     }
   }
@@ -74,13 +71,10 @@ export const getLocation = async (locationID) => {
   const locationRef = doc(locationsCollection, locationID);
   const locationSnapshot = await getDoc(locationRef);
 
-  if (locationSnapshot.exists()) 
-  {
+  if (locationSnapshot.exists()) {
     const data = locationSnapshot.data();
     return data;
-  } 
-  else 
-  {
+  } else {
     return null;
   }
 }
@@ -91,12 +85,9 @@ export const updateInfluencer = async (username, payload) => {
   const influencerRef = doc(influencersCollection, username);
   const data = {...payload, last_updated: Timestamp.now().toDate()};
 
-  try 
-  {
+  try {
     await setDoc(influencerRef, data);
-  } 
-  catch(err) 
-  {
+  } catch(err) {
     console.log(err);
     throw error(500, {
       message: "Error adding influencer",
@@ -116,12 +107,9 @@ export const addOrUpdateLocation = async (locationID, payload) => {
   
   const data = {...payload, last_updated: Timestamp.now().toDate()};
 
-  try 
-  {
+  try {
     await setDoc(locationRef, data);
-  } 
-  catch(err) 
-  {
+  } catch(err) {
     console.error(err);
   }
 

@@ -7,7 +7,7 @@ import { addOrUpdateLocation } from '$lib/server/db/firebase';
 */
 
 /** @type {import('./$types').RequestHandler} */
-export async function GET({ params, fetch }) {
+export async function GET({ params }) {
   const { locationID } = params;
   console.log(`endpoint hit: /api/get-location-data/${locationID}`);
 
@@ -23,7 +23,7 @@ export async function GET({ params, fetch }) {
     .then(res => res.json())
     // deconstruct the response and retrieve only the important data
     .then(data => {
-      // console.log('received data from instagram API:    ',data);
+      console.log('received data from instagram API:    ',data);
       const { native_location_data: {
         location_info,
         ranked : {
@@ -150,25 +150,13 @@ export async function GET({ params, fetch }) {
   
   const payload = await getLocationData;
 
-  const update = async () => {
-    try 
-    {
-      await addOrUpdateLocation(locationID, payload);
-    }
-    catch(err) 
-    {
-      console.error('UPDATE FAILED: ', err);
-    }
-  } 
-    
-
-  update();
+  addOrUpdateLocation(locationID, payload);
 
   return new Response(JSON.stringify(payload), {
     headers: {
       'Content-Type': 'application/json',
       'Access-Control-Allow-Origin': '*',
-      'Cache-Control': 'public, max-age=120',
+      // 'Cache-Control': 'public, max-age=120',
     }
   })
 }

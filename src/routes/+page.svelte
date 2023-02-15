@@ -9,7 +9,7 @@
   const influencersData = data.influencers.influencers;
   const locationsData = data.influencers.locationIDs;
   // console.log("influencersData",influencersData);
-  // console.log("locationsData:", locationsData);
+  console.log("locationsData:", locationsData);
 
   let promise = Promise.resolve([]);
 

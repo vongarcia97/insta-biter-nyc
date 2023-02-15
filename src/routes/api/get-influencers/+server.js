@@ -10,7 +10,8 @@ this endpoint will:
 export const GET = async ({ fetch }) => {
   // console.log('endpoint hit: /api/get-influencers');
   // these locations are no longer working
-  const notWorkingLocations = ['243993197', '156771374797409', '1422137628045302', '279966182', '111707264771812', '839692986', '106574191696102', '111497980393935', '1033913461', '3001373'];
+  const notWorkingLocations = ['243993197', '156771374797409', '1422137628045302', '279966182', '111707264771812', '839692986', '106574191696102', '111497980393935', '1033913461', '3001373', '196445117660148', '264141897', '1804160'];
+
 
   // initialize an array to store all of the IDs of the locations we need metadata for
   const locationIDs = [];

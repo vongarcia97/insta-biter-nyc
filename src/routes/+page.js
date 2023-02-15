@@ -12,6 +12,7 @@ export async function load({ fetch }) {
     { 
       const influencers = await fetch('/api/get-influencers');
       const data = await influencers.json();
+      console.log(`here's the page data: ${JSON.stringify(data)}`);
       
       return data;
     }

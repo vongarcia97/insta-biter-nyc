@@ -15,18 +15,17 @@ export async function GET({ params, fetch }) {
   console.log(`endpoint hit: /api/get-location/${location}`);
   // Check if the location already exists in the database
   const data = await getLocation(location);
+  console.log(JSON.stringify(data));
 
   // If the location does not exist, fetch the data from Instagram
-  if (!data || isOlderThanFiveDays(data.last_updated))
-  {
-    try
-    {
+  if (!data || data.lat === undefined) {
+    
+    try {
       const response = fetch(`/api/get-location-data/${location}`);
 
-      if (response.ok)
-      {
+      if (response.ok) {
         const newLocationData = await response.json();
-        // console.log('new location data for: ' + location);
+        console.log('new location data for: ' + location);
 
         return new Response(JSON.stringify(newLocationData), {
           headers: {
@@ -36,22 +35,19 @@ export async function GET({ params, fetch }) {
           }
         });
       }
-    }
-    catch (err)
-    {
+    } catch (err) {
       // console.log("ERROR FETCHING NEW DATA FOR " + location + ": \n", err, "\n RETURNING OLD DATA");
       throw new error(500, err);
     }
   }
 
   // If the location exists and is not old data, return the data from the database
-  else
-  {
+  else {
     return new Response(JSON.stringify(data), {
       headers: {
         'Content-Type': 'application/json',
         'Access-Control-Allow-Origin': '*',
-        'Cache-Control': 'public, max-age=120',
+        // 'Cache-Control': 'public, max-age=120',
       }
     });
   }
