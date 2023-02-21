@@ -11,8 +11,6 @@
   let map;
   let markerLayer;
 
-  console.log(locationsData);
-  
   $: index = indexSelected;
   $: locationIDs = influencersData[index].last_visited_locations.slice();
   $: locations = locationsData.filter(location => {
