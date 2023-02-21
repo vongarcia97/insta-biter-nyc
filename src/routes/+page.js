@@ -8,18 +8,14 @@ import { error } from '@sveltejs/kit';
 export async function load({ fetch }) {
 
   const fetchInfluencersData = async () => {
-    try 
-    { 
+    try { 
       const influencers = await fetch('/api/get-influencers');
       const data = await influencers.json();
-      console.log(`here's the page data: ${JSON.stringify(data)}`);
       
       return data;
-    }
-    catch(e)
-    {
-      console.error('error fetching influencers data', e);
-      throw error(500, e);
+    } catch(err){
+      console.error(`Error fetching influencers data: ${err}`);
+      throw error(500, { err: err, message: 'Error fetching influencers data' });
     }
   };  
 

@@ -11,17 +11,13 @@
   let map;
   let markerLayer;
 
-  const dissallowedCategories = ["City", "Neighborhood", "State", "Landmark"];
+  console.log(locationsData);
   
   $: index = indexSelected;
   $: locationIDs = influencersData[index].last_visited_locations.slice();
   $: locations = locationsData.filter(location => {
-    if (location.not_found !== true)
-    {
-      if (locationIDs.includes(location.location_id) && !dissallowedCategories.includes(location.category) && location.lng !== null && location.lat !== null) 
-      {
-        return location
-      }
+    if (location.alert === undefined && locationIDs.includes(location.location_id) && location.lng !== null) {
+      return location
     }
   });
 
@@ -32,19 +28,17 @@
     }
   }
 
+  //function that will update the current map layer, when a new array of locations needs to be rendered
   const updateLayerLocations = (locations) => {
-    if (!markerLayer) 
-    {
+    if (!markerLayer) {
       locations.forEach((location) => createMarker(location));
-    }
-    else
-    {
+    } else {
       markerLayer.clearLayers();
       locations.forEach((location) => createMarker(location));
     }
-  }
+  };
 
-  //create a function that will create a divIcon for a marker
+  //function that creates the div elements to be plotted on the map
   function createMarker(location) {
     const name = location.name;
     const loc = [location.lat, location.lng];
@@ -74,6 +68,7 @@
 		return marker;
 	}
 
+  //function that creates Leaflet divIcon to be used as the marker icon
   function markerIcon(name) {
 		let html = `<div class="map-marker"><img style="width: 50px; margin: auto;" src=${visited} /><div class="marker-text">${name}</div></div>`;
 		return L.divIcon({
@@ -82,9 +77,7 @@
 		});
 	}
 
-  // This function will bind popup to marker.
-  // Create a popup with a Svelte component inside it and handle removal when the popup is torn down.
-	// `createFn` will be called whenever the popup is being created, and should create and return the component.
+  //function that will bind custom Svelte popup component to the Leaflet DOM element
 	function bindPopup(marker, createFn) {
 		let popupComponent;
 		marker.bindPopup(() => {
@@ -116,17 +109,14 @@
     attribution: `&copy;<a href="https://www.openstreetmap.org/copyright" target="_blank">OpenStreetMap</a>, &copy;<a href="https://carto.com/attributions" target="_blank">CARTO</a>`
     }).addTo(map);
     
-    // add marker layer to the map 
+    // create a marker layer group and add it to the markerLayer variable
     markerLayer = L.layerGroup().addTo(map);
 
     return map;
   }
 
-  // subscribe to the remoteIndex store and update the indexSelected variable
-  // assign to variable so we can unsubscribe when component is destroyed
-  const unsubscribe = remoteIndex.subscribe(index => {
-      indexSelected = index;
-    });
+  // subscribe to the remoteIndex store and assign the value to indexSelected
+  const unsubscribe = remoteIndex.subscribe(index => indexSelected = index);
 
   onMount(() => {
     map = createMap();
@@ -134,13 +124,10 @@
       map.remove();
       map = null;
       markerLayer = null;
+
+      unsubscribe();
     };
   });
-
-  onDestroy(() => {
-    unsubscribe();
-  });
-
 
 </script>
 

@@ -8,20 +8,16 @@
 
   const influencersData = data.influencers.influencers;
   const locationsData = data.influencers.locationIDs;
-  // console.log("influencersData",influencersData);
-  console.log("locationsData:", locationsData);
 
   let promise = Promise.resolve([]);
 
   const fetchLocationsData = async () => {
     const query = '/api/get-location/';
 
-    const locations = Promise.all(locationsData.map(async (locationID) =>
-      {
+    const locations = Promise.all(locationsData.map(async (locationID) => {
         const response = await fetch(query + `${locationID}`);
 
-        if (response.ok) 
-        {
+        if (response.ok) {
           const data = await response.json();
           return data;
         }
@@ -32,7 +28,6 @@
   }
 
   onMount(()=> {
-    // console.log("onMount");
     promise = fetchLocationsData();
   });
 </script>
@@ -42,14 +37,11 @@
 {#await promise}
 <div class="flex justify-center items-center h-full">
   <div class="text-center">
-    <h1 class="text-2xl font-bold">LOADING....</h1>
+    <h1 class="text-2xl font-bold">Fetching data from the server... Please wait....</h1>
   </div>
 </div>
-
 {:then data}
 <BiteMap locationsData={data} influencersData={influencersData}/>
-
-{:catch error} 
-<p style="color: red">{error.message}</p>
-
+{:catch error}
+<h1>Error fetching data from the server. Please try to refresh your browser, or try again later.</h1>
 {/await}

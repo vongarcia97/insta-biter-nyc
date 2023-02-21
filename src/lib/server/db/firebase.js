@@ -33,7 +33,7 @@ const db = getFirestore(app);
 const influencersCollection = collection(db, "influencers");
 const locationsCollection = collection(db, "locations");
 
-// Create and export an async function that returns all documents within the "influencers" collection
+// Function that retrieves all documents from the "influencers" collection
 export const getInfluencers = async () => {
   const influencersQuery = query(influencersCollection);
   const influencersSnapshot = await getDocs(influencersQuery);
@@ -43,30 +43,7 @@ export const getInfluencers = async () => {
   return influencers;
 };
 
-// Create and export an async function that returns all documents within the "locations" collection
-export const getLocations = async (...IDs) => {
-  const locationsData = [];
-  const locationIDs = [...IDs];
-
-  for (let i = 0; i < locationIDs.length - 1; i++)
-  {
-    const location = locationIDs[i];
-    // console.log('Currently getting location for id:   ',location)
-    const locationRef = doc(locationsCollection, location);
-    const locationSnapshot = await getDoc(locationRef);
-
-    if (locationSnapshot.exists()) {
-      const data = locationSnapshot.data();
-      locationsData.push(data);
-    } else {
-      locationsData.push({not_found: true, location_id: locationIDs[i]});
-    }
-  }
-
-  return locationsData;
-}
-
-// Create and export an async function that retrieves a specific document within the "locations" collection based on the locationID
+// Function that returns the location data for a given location ID, or null if location does not exist
 export const getLocation = async (locationID) => {
   const locationRef = doc(locationsCollection, locationID);
   const locationSnapshot = await getDoc(locationRef);
@@ -79,7 +56,7 @@ export const getLocation = async (locationID) => {
   }
 }
 
-// Create and export an async function that updates a document within the "influencers" collection
+// Function that updated the data for a given influencer
 export const updateInfluencer = async (username, payload) => {
 
   const influencerRef = doc(influencersCollection, username);
@@ -88,7 +65,7 @@ export const updateInfluencer = async (username, payload) => {
   try {
     await setDoc(influencerRef, data);
   } catch(err) {
-    console.log(err);
+    console.error(err);
     throw error(500, {
       message: "Error adding influencer",
       error: err 
@@ -100,7 +77,7 @@ export const updateInfluencer = async (username, payload) => {
   return;
 }
 
-// Create and export an async function that updates a document within the "locations" collection
+// Function that adds new data or updates an outdated data entry wihtin the "locations" collection
 export const addOrUpdateLocation = async (locationID, payload) => {
   
   const locationRef = doc(locationsCollection, locationID);
@@ -116,7 +93,7 @@ export const addOrUpdateLocation = async (locationID, payload) => {
   return;
 }
 
-// Create and export an async function that checks if date is older than 3 days
+// Function that checks if date is older than 3 days
 export const isOlderThanThreeDays = (date) => {
   // console.log('here is the date object received', date);
 
@@ -139,6 +116,7 @@ export const isOlderThanThreeDays = (date) => {
   }
 };
 
+// Function that checks if date is older than 5 days
 export const isOlderThanFiveDays = (date) => {
   // console.log('here is the date object received', date);
 
