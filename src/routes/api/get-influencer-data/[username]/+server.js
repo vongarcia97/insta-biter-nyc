@@ -12,7 +12,7 @@ this endpoint will:
 export async function GET({ params }) {
   
   const { username } = params;
-  console.log(`endpoint hit: /api/get-influencer-data/${username}`);
+  console.log(`API endpoint hit: /api/get-influencer-data/${username}`);
 
   // console.log('attempting to fetch data from instagram API........');
   // fetch user data from instagram API
@@ -111,36 +111,22 @@ export async function GET({ params }) {
     }
     })
     .catch((err) => {
-      // console.log(err)
+      console.error(`Error occured while fetching data from Instagram API: ${err}`);
       throw error(500, {
         message: "failed to fetch data from instagram API",
         error: err
-      })
+      });
     });
         
   const payload = await getInfluencerData;
 
-  
-
-  const update = async () => {
-    try 
-    {
-      await updateInfluencer(username, payload);
-    }
-    catch(err) 
-    {
-      console.error('UPDATE FAILED: ', err);
-    }
-  }
-    
-
-  update();
+  updateInfluencer(username, payload);
   
   return new Response(JSON.stringify(payload), {
     headers: {
       'Content-Type': 'application/json',
       'Access-Control-Allow-Origin': '*',
-      'Cache-Control': 'max-age=120',
+      'Cache-Control': 'max-age=86400',
     }
   });
 }

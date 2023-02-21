@@ -12,32 +12,36 @@ import { getLocation, isOlderThanFiveDays } from '$lib/server/db/firebase';
 export async function GET({ params, fetch }) {
 
   const { location } = params;
-  console.log(`endpoint hit: /api/get-location/${location}`);
+  // console.log(`API endpoint hit: /api/get-location/${location}`);
+
   // Check if the location already exists in the database
   const data = await getLocation(location);
-  console.log(JSON.stringify(data));
 
   // If the location does not exist, fetch the data from Instagram
-  if (!data || data.lat === undefined) {
+  if (!data || data.lat === undefined/*  || isOlderThanFiveDays(data.last_updated) */) {
     
     try {
       const response = fetch(`/api/get-location-data/${location}`);
 
       if (response.ok) {
-        const newLocationData = await response.json();
-        console.log('new location data for: ' + location);
+        const newData = await response.json();
 
-        return new Response(JSON.stringify(newLocationData), {
-          headers: {
-            'Content-Type': 'application/json',
-            'Access-Control-Allow-Origin': '*',
-            'Cache-Control': 'public, max-age=120',
-          }
-        });
+        // if we are not alerted of an error, return the data || else throw an error
+        if (newData.alert === undefined) {
+          return new Response(JSON.stringify(newData), {
+            headers: {
+              'Content-Type': 'application/json',
+              'Access-Control-Allow-Origin': '*',
+              'Cache-Control': 'public, max-age=86400',
+            }
+          });
+        } else {
+          throw error(500, { message: `Error fetching location data from Instagram API: ${newData.alert}`});
+        }
       }
     } catch (err) {
-      // console.log("ERROR FETCHING NEW DATA FOR " + location + ": \n", err, "\n RETURNING OLD DATA");
-      throw new error(500, err);
+      console.error(`Error fetching location data for ${location}: ${err}`);
+      throw error(500, {err: err, message: `Error fetching location data from Instagram API for ${location}`});
     }
   }
 
@@ -47,7 +51,7 @@ export async function GET({ params, fetch }) {
       headers: {
         'Content-Type': 'application/json',
         'Access-Control-Allow-Origin': '*',
-        'Cache-Control': 'public, max-age=120',
+        'Cache-Control': 'public, max-age=86400',
       }
     });
   }

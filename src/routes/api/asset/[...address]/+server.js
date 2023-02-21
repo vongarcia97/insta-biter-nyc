@@ -9,7 +9,6 @@ import { error } from '@sveltejs/kit';
 /** * @type {import('./$types').RequestHandler} */
 export async function GET({ params, url }) {
   // console.log('request received for PUBLIC Instagram image asset', params.address);
-
   const { address } = params;
   
   // initiate fetch request for image. Include any needed params to for the request
@@ -22,20 +21,21 @@ export async function GET({ params, url }) {
     })
     .catch((e) => {
       // console.log('error fetching image from image host: ', e);
-      throw new error(500, e)
+      throw error(500, e)
     });
 
-  // convert response to blob before returning to client
-  const blob = await response.blob();
-  // console.log('here is the image object blob: ', blob);
-
-
-
-  return new Response(blob, {
-    headers: {
-      "Access-Control-Allow-Origin": "*",
-      'Content-Type': 'image/jpeg',
-      'Cache-Control': 'max-age=1200',
-      },
-    });
+  if (response.ok) {
+    // convert response to blob before returning to client
+    const blob = await response.blob();
+  
+    return new Response(blob, {
+      headers: {
+        "Access-Control-Allow-Origin": "*",
+        'Content-Type': 'image/jpeg',
+        'Cache-Control': 'max-age=1200',
+        },
+      });
+  } else {
+    throw error(500, 'error fetching image from image host');
+  }
 }
