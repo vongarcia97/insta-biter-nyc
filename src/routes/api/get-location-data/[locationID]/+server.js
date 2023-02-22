@@ -9,10 +9,8 @@ import { addOrUpdateLocation } from '$lib/server/db/firebase';
 /** @type {import('./$types').RequestHandler} */
 export async function GET({ params }) {
   const { locationID } = params;
-  // console.log(`endpoint hit: /api/get-location-data/${locationID}`);
 
-  // fetch location data from instagram API
-  // console.log('attempting to fetch location data from instagram API');
+  // fetch location data from Instagram API
   const getLocationData = fetch(`https://www.instagram.com/explore/locations/${locationID}/?__a=1&__d=dis`, {
     headers: {
       "Content-Type": "application/json",
@@ -20,10 +18,11 @@ export async function GET({ params }) {
     },
   })
     .then(res => res.json())
-    // deconstruct the response and retrieve only the important data
+    // deconstruct the response and format the data for database storage
     .then(data => {
-      console.log(`Here is the data received from the Instagram API: ${JSON.stringify(data)}`);
+      // console.log(`Here is the data received from the Instagram API: ${JSON.stringify(data)}`);
       // handle invalid returns from Instagram API when too many fetch requests are made
+      let payload;
       if (data.native_location_data !== undefined) {
         const { native_location_data: {
           location_info,
@@ -126,7 +125,7 @@ export async function GET({ params }) {
           website = location_info.website;
         }
   
-        const payload = {
+        payload = {
           location_id,
           name,
           phone,
@@ -140,11 +139,12 @@ export async function GET({ params }) {
           website,
           top_posts,
         }
-        return payload
+
       } else {
-        const payload = {alert: 'Too many requests made to Instagram API'};
-        return payload
+        payload = {alert: 'Too many requests made to Instagram API'};
+
       }
+      return payload;
     })
     .catch(err => {
       console.error(`Error fetching location data from Instagram API: ${err}`)
@@ -154,7 +154,8 @@ export async function GET({ params }) {
 
   // if the data returns from the instagram API is valid, update the database and return the data
   if (payload.alert === undefined) {
-    addOrUpdateLocation(locationID, payload);
+    console.log(`Updating location data.... ${payload.name}, ${payload.location_id}`)
+    await addOrUpdateLocation(locationID, payload);
   }
 
   return new Response(JSON.stringify(payload), {

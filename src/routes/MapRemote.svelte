@@ -4,6 +4,7 @@
   export let influencersData;
 
   let indexSelected;
+
   remoteIndex.subscribe(index => {
     indexSelected = index;
   });
@@ -11,14 +12,12 @@
 
   function changeTab(i) {
     return () => {
-      // console.log('changeTab', i)
       remoteIndex.set(i);
     }
   }
 
   $: influencers = influencersData;
   $: index = indexSelected;
-  // $: console.log('index updated via store:    ', indexSelected);
 </script>
 
 <!-- {#if influencers} -->

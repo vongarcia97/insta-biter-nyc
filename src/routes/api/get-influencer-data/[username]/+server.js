@@ -10,11 +10,8 @@ this endpoint will:
 
 /** @type {import('./$types').RequestHandler} */
 export async function GET({ params }) {
-  
   const { username } = params;
-  console.log(`API endpoint hit: /api/get-influencer-data/${username}`);
 
-  // console.log('attempting to fetch data from instagram API........');
   // fetch user data from instagram API
   const getInfluencerData = fetch(`https://www.instagram.com/${username}/channel/?__a=1&__d=dis`, 
     {

@@ -18,7 +18,7 @@ export async function GET({ params, fetch }) {
   const data = await getLocation(location);
 
   // If the location does not exist, fetch the data from Instagram
-  if (!data || data.lat === undefined/*  || isOlderThanFiveDays(data.last_updated) */) {
+  if (!data || data.lat === undefined/*|| isOlderThanFiveDays(data.last_updated) */) {
     
     try {
       const response = fetch(`/api/get-location-data/${location}`);

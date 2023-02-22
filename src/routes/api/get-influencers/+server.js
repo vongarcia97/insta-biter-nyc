@@ -24,8 +24,9 @@ export const GET = async ({ fetch }) => {
     // console.log('checking influencer data for:  ' + influencers[i].username);
     // check if data is old
     // const date = influencers[i].last_updated;
-    const older = /* isOlderThanThreeDays(date) */ false;
+    const older = false /* isOlderThanThreeDays(date); */
 
+    // if data is outdated, retrieve new data from Instagram and return updated data instead.
     if (older) {
       // console.log('found outdated influencer data');
       const response = await fetch(`/api/get-influencer-data/${influencers[i].username}`);
