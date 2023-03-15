@@ -20,17 +20,21 @@ export const GET = async ({ fetch }) => {
   const influencers = await getInfluencers();
 
   // iterate through the array of influencers to check for outdated data
-  for (let i = 0; i < influencers.length; i++) {
+  for (let i = 0; i < influencers.length; i++)
+  {
     // console.log('checking influencer data for:  ' + influencers[i].username);
+
     // check if data is old
     // const date = influencers[i].last_updated;
     const older = /* isOlderThanThreeDays(date) */ false;
 
-    if (older) {
+    if (older)
+    {
       // console.log('found outdated influencer data');
       const response = await fetch(`/api/get-influencer-data/${influencers[i].username}`);
 
-      if (response.ok) {
+      if (response.ok)
+      {
         const data = await response.json();
         // console.log('able to retrieve new data for: ' + influencers[i].username, data);
         
@@ -38,26 +42,40 @@ export const GET = async ({ fetch }) => {
         influencers[i] = await data;
         
         // iterate through influencer's last visited locations and add them to locationIDs array
-        influencers[i].last_visited_locations.forEach((location) => {
-          if (!locationIDs.includes(location) && !notWorkingLocations.includes(location)) {
+        influencers[i].last_visited_locations.forEach((location) =>
+        {
+          if (!locationIDs.includes(location) && !notWorkingLocations.includes(location))
+          {
             locationIDs.push(location);
           }
-        });
-      } else {
-        // console.log('unable to retrieve new data for: ' + influencers[i].username);
-        influencers[i].last_visited_locations.forEach((location) => {
-          if (!locationIDs.includes(location) && !notWorkingLocations.includes(location)) {
-            locationIDs.push(location);
-          }
-        });
+        }
+        );
+
       }
-    } else {
+      else
+      {
+        // console.log('unable to retrieve new data for: ' + influencers[i].username, 'keeping old data....');
+        influencers[i].last_visited_locations.forEach((location) =>
+        {
+          if (!locationIDs.includes(location) && !notWorkingLocations.includes(location))
+          {
+            locationIDs.push(location);
+          }
+        }
+        );
+      }
+    }
+    else
+    {
       // iterate through influencer's last visited locations and add them to locationIDs array
-      influencers[i].last_visited_locations.forEach((location) => {
-        if (!locationIDs.includes(location) && !notWorkingLocations.includes(location)) {
+      influencers[i].last_visited_locations.forEach((location) =>
+      {
+        if (!locationIDs.includes(location) && !notWorkingLocations.includes(location))
+        {
           locationIDs.push(location);
         }
-      });
+      }
+      );
     }
   }
 
@@ -71,7 +89,7 @@ export const GET = async ({ fetch }) => {
     headers: {
       'Content-Type': 'application/json',
       'Access-Control-Allow-Origin': '*',
-      'Cache-Control': 'max-age=86400',
+      'Cache-Control': 'max-age=120',
     }
   });
 }
