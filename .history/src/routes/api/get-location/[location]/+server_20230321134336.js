@@ -1,5 +1,5 @@
 import { error } from '@sveltejs/kit';
-import { getLocation/* , isOlderThanFiveDays */ } from '$lib/server/db/firebase';
+import { getLocation, isOlderThanFiveDays } from '$lib/server/db/firebase';
 
 /* THIS ENDPOINT WILL *
 *
@@ -13,11 +13,12 @@ export async function GET({ params, fetch }) {
 
   const { location } = params;
   // console.log(`API endpoint hit: /api/get-location/${location}`);
+
   // Check if the location already exists in the database
   const data = await getLocation(location);
 
   // If the location does not exist, fetch the data from Instagram
-  if (!data || data.lat === undefined /* || isOlderThanFiveDays(data.last_updated) */) {
+  if (!data || data.lat === undefined || isOlderThanFiveDays(data.last_updated)) {
     
     try {
       const response = fetch(`/api/get-location-data/${location}`);
@@ -50,7 +51,7 @@ export async function GET({ params, fetch }) {
       headers: {
         'Content-Type': 'application/json',
         'Access-Control-Allow-Origin': '*',
-        'Cache-Control': 'public, max-age=100',
+        'Cache-Control': 'public, max-age=86400',
       }
     });
   }

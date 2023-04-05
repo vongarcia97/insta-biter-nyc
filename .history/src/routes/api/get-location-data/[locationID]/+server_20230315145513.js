@@ -161,7 +161,7 @@ export async function GET({ params }) {
     headers: {
       'Content-Type': 'application/json',
       'Access-Control-Allow-Origin': '*',
-      'Cache-Control': 'public, max-age=100',
+      'Cache-Control': 'public, max-age=86400',
     }
   });
 }
