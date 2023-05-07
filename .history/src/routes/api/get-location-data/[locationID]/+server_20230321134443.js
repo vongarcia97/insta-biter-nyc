@@ -22,7 +22,7 @@ export async function GET({ params }) {
     .then(res => res.json())
     // deconstruct the response and retrieve only the important data
     .then(data => {
-      // console.log(`Here is the data received from the Instagram API: ${JSON.stringify(data)}`);
+      console.log(`Here is the data received from the Instagram API: ${JSON.stringify(data)}`);
       // handle invalid returns from Instagram API when too many fetch requests are made
       if (data.native_location_data !== undefined) {
         const { native_location_data: {

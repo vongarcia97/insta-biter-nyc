@@ -1,5 +1,5 @@
 import { error } from '@sveltejs/kit';
-import { getLocation, isOlderThanFiveDays } from '$lib/server/db/firebase';
+import { getLocation/* , isOlderThanFiveDays */ } from '$lib/server/db/firebase';
 
 /* THIS ENDPOINT WILL *
 *
